@@ -63,7 +63,7 @@ Git
 PostgreSQL or SQLite (as configured)
 
 2️⃣ Clone the Repository
-git clone https://github.com/your-username/ai-interview-room.git
+git clone https://github.com/dudejd/AI-Interview-Room
 cd ai-interview-room/frontend
 
 3️⃣ Install Dependencies
