@@ -1,0 +1,58 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id               String             @id @default(cuid())
+  name             String
+  email            String             @unique
+  role             String?
+  experience       String?
+  faceEmbedding    String?            // Stringified array of numbers
+  interviews       InterviewSession[]
+  createdAt        DateTime           @default(now())
+}
+
+model InterviewSession {
+  id               String         @id @default(cuid())
+  userId           String
+  user             User           @relation(fields: [userId], references: [id])
+  type             String         // HR, Technical, Coding, Mock
+  confidenceScore  Float          @default(0)
+  commScore        Float          @default(0)
+  overallScore     Float          @default(0)
+  transcript       String?
+  feedback         String?
+  emotionLogs      EmotionLog[]
+  eyeContactLogs   EyeContactLog[]
+  createdAt        DateTime       @default(now())
+}
+
+model EmotionLog {
+  id               String           @id @default(cuid())
+  sessionId        String
+  session          InterviewSession @relation(fields: [sessionId], references: [id])
+  emotion          String
+  confidence       Float
+  timestamp        Float            // Seconds from start
+}
+
+model EyeContactLog {
+  id               String           @id @default(cuid())
+  sessionId        String
+  session          InterviewSession @relation(fields: [sessionId], references: [id])
+  isPresent        Boolean
+  timestamp        Float
+}
+
+model Question {
+  id               String   @id @default(cuid())
+  text             String
+  category         String   // HR, Technical, etc.
+  difficulty       String
+}
